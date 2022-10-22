@@ -1,7 +1,7 @@
 # SCRIPT YAML PARA USO NO CLOUDFORMARTION
-## Criando VPC com duas subnets públicas e duas subnets privadas
+## vpc.yaml
 
-O script tem como objetivo criar uma VPC na região em que estiver.
+O script vpc.yaml tem como objetivo criar uma VPC na região em que estiver.
 
 São criadas duas subnets nas duas primeiras zonas de disponibilidade da região.
 Por exemplo, caso esteja na região de São Paulo (sa-east-1), as subnets serão criadas nas zonas de disponibilidade sa-east-1a e sa-east-1b.
