@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Stack para criar inst��ncia Linux Ubuntu Server 20.04 LTS"
+
+# Este Template cria os seguintes recursos:
+# INSTANCIA AMAZON EC2
+# SECURITY GROUP
+
+#AMI utilizada: ami-0d5bf08bc8017c83b (64 bits (x86))
+
+Parameters:
+  NetworkStackName:
+    Description: "Nome da Stack do Cloudformation com os recursos de rede"
+    Type: String
+    MinLength: 1
+    MaxLength: 255
+    AllowedPattern: '^[a-zA-Z][-a-zA-Z0-9]*$'
+    Default: StackVPC
+    
+
+Resources:
+  WebServerInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0d5bf08bc8017c83b
+      NetworkInterfaces:
+        - GroupSet:
+            - !Ref WebServerSecurityGroup
+          AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          DeleteOnTermination: true
+          SubnetId:
+            Fn::ImportValue:
+              !Sub us-east-2-StackVPC-PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: Web Server
+  
+  DiskVolume:
+    Type: AWS::EC2::Volume
+    Properties:
+      Size: 10
+      AvailabilityZone: !GetAtt WebServerInstance.AvailabilityZone
+      Tags:
+        - Key: Name
+          Value: Web Data
+  
+  DiskMountPoint:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      InstanceId: !Ref WebServerInstance
+      VolumeId: !Ref DiskVolume
+      Device: /dev/sdh
+  
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP ingress
+      VpcId:
+        Fn::ImportValue:
+          !Sub us-east-2-StackVPC-VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Web Server Security Group
+
+Outputs:
+  InfoInstance:
+    Description: IP de acesso instancia
+    Value: !Sub ${WebServerInstance.PublicIp}
