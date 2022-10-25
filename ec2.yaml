@@ -5,7 +5,7 @@ Description: "Stack para criar instancia Linux Ubuntu Server 20.04 LTS"
 # INSTANCIA AMAZON EC2
 # SECURITY GROUP
 
-#AMI utilizada: ami-0d5bf08bc8017c83b (64 bits (x86))
+# AMI utilizada: ami-0d5bf08bc8017c83b (64 bits (x86))
 
 Parameters:
   NetworkStackName:
@@ -16,6 +16,8 @@ Parameters:
     AllowedPattern: '^[a-zA-Z][-a-zA-Z0-9]*$'
     Default: StackVPC
     
+
+# No campo SubnetId > Fn::ImportValue > !Sub deve ser substituido pelo valor exportado ao criar a subnet na stack da VPC
 
 Resources:
   WebServerInstance:
@@ -31,7 +33,7 @@ Resources:
           DeleteOnTermination: true
           SubnetId:
             Fn::ImportValue:
-              !Sub us-east-2-StackVPC-PublicSubnet1
+              !Sub us-west-1-${NetworkStackName}-PublicSubnet1
       Tags:
         - Key: Name
           Value: Web Server
@@ -52,13 +54,15 @@ Resources:
       VolumeId: !Ref DiskVolume
       Device: /dev/sdh
   
+
+# No campo VpcId > Fn::ImportValue > !Sub deve ser substituido pelo valor exportado ao criar a VPC na stack da VPC
   WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Enable HTTP ingress
       VpcId:
         Fn::ImportValue:
-          !Sub us-east-2-StackVPC-VPC
+          !Sub us-west-1-${NetworkStackName}-VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 80
