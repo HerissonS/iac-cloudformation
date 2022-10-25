@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "Stack para criar inst��ncia Linux Ubuntu Server 20.04 LTS"
+Description: "Stack para criar instancia Linux Ubuntu Server 20.04 LTS"
 
 # Este Template cria os seguintes recursos:
 # INSTANCIA AMAZON EC2

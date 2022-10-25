@@ -22,5 +22,7 @@ Por questões de custo e devido o script ser apenas para laboratório inicial, n
 ## ec2.yaml
 
 O script ec2.yaml cria um instância do tipo t2.micro com a imagem do Ubuntu Server 20.04 LTS.
+
 É criado um grupo de segurança liberando as portas HTTP (80) e SSH (22).
+
 Também é feita a criação de um segundo volume, um disco com tamanho de 10 GiB.
