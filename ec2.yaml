@@ -78,6 +78,8 @@ Resources:
         - Key: Name
           Value: Web Server Security Group
 
+# A unica saida no script mostra o IP publico que a instancia recebeu
+
 Outputs:
   InfoInstance:
     Description: IP de acesso instancia
