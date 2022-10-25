@@ -5,7 +5,8 @@ Description: "Stack para criar instancia Linux Ubuntu Server 20.04 LTS"
 # INSTANCIA AMAZON EC2
 # SECURITY GROUP
 
-# AMI utilizada: ami-0d5bf08bc8017c83b (64 bits (x86))
+# AMI utilizada no exemplo: ami-03f6d497fceb40069 (64 bits (x86))
+# AMI pertencente a região us-west-1
 
 Parameters:
   NetworkStackName:
@@ -17,6 +18,7 @@ Parameters:
     Default: StackVPC
     
 
+# No campo ImageId deve ser colocado o ID da AMI a ser utilizada
 # No campo SubnetId > Fn::ImportValue > !Sub deve ser substituido pelo valor exportado ao criar a subnet na stack da VPC
 
 Resources:
@@ -24,7 +26,7 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
-      ImageId: ami-0d5bf08bc8017c83b
+      ImageId: ami-03f6d497fceb40069
       NetworkInterfaces:
         - GroupSet:
             - !Ref WebServerSecurityGroup
